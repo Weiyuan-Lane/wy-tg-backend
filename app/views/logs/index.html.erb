@@ -1,5 +1,7 @@
 <h1>Upload Logs</h1>
-
-
+<%= form_tag(upload_csv_path, method: :post, multipart: true) do %>
+  <%= file_field_tag :file, accept: 'text/csv' %>
+  <%= submit_tag( "Import" ) %>
+<% end %>
 <hr>
 <h2>Check Logs</h2>
