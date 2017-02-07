@@ -1,5 +1,6 @@
 require 'json'
 require 'english'
+require 'csv'
 
 module LogsHelper
   def combineHashPair (originalHash, overridingHash)
@@ -35,19 +36,20 @@ module LogsHelper
 
   def findCsvRowError (row)
     error = nil
+
     if row.size != 4
       error = 'Row does not have 4 entries'
-    elsif !row.key?(:object_id) || row[:object_id] == '' || !isPositiveInteger?(row[:object_id])
+    elsif !row.key?('object_id') || row['object_id'] == '' || !isPositiveInteger?(row['object_id'])
       error = 'Row object_id does not correspond to a valid integer'
-    elsif !row.key?(:object_type) || row[:object_type] == ''
+    elsif !row.key?('object_type') || row['object_type'] == ''
       error = 'Row object_type does not correspond to a non-empty string'
-    elsif !row.key?(:timestamp) || row[:timestamp] == '' || !isPositiveInteger?(row[:timestamp])
+    elsif !row.key?('timestamp') || row['timestamp'] == '' || !isPositiveInteger?(row['timestamp'])
       error = 'Row timestamp does not correspond to a valid integer'
-    elsif !row.key?(:object_changes)
+    elsif !row.key?('object_changes')
       error = 'Row object_changes is not a valid json structure'
     else
       begin
-        JSON.parse(row[:object_changes])
+        JSON.parse(row['object_changes'])
       rescue JSON::ParserError => e
         error = 'Row object_changes is not a valid json structure'
       end
@@ -61,12 +63,11 @@ module LogsHelper
     if file.readlines.size == 0
       error = 'File is empty'
     else
-      #Restore temp file
-      file.seek(0)
-      CSV.foreach(file.path, :headers => true) do |row|
-        rowError = findCsvRowError(row)
+      text = File.read(file).gsub(/\\"/,'""')
+      CSV.parse(text, headers: true) do |row|
+        rowError = findCsvRowError(row.to_hash)
         if !rowError.nil?
-          error $INPUT_LINE_NUMBER + ' row: ' + rowError
+          error = 'Row ' + $INPUT_LINE_NUMBER.to_s + ': ' + rowError
           break
         end
       end

@@ -106,10 +106,10 @@ class LogsHelperTest < ActionView::TestCase
 
   test "CSV row missing object_id" do
     csvRow = {}
-    csvRow[:object_id_name_wrong] = '1'
-    csvRow[:object_type] = 'Order'
-    csvRow[:timestamp] = '1'
-    csvRow[:object_changes] = "{\"customer_name\":\"Jack\"}"
+    csvRow['object_id_name_wrong'] = '1'
+    csvRow['object_type'] = 'Order'
+    csvRow['timestamp'] = '1'
+    csvRow['object_changes'] = "{\"customer_name\":\"Jack\"}"
 
     answer = 'Row object_id does not correspond to a valid integer'
 
@@ -118,10 +118,10 @@ class LogsHelperTest < ActionView::TestCase
 
   test "CSV row missing object_type" do
     csvRow = {}
-    csvRow[:object_id] = '1'
-    csvRow[:object_type_name_wrong] = 'Order'
-    csvRow[:timestamp] = '1'
-    csvRow[:object_changes] = "{\"customer_name\":\"Jack\"}"
+    csvRow['object_id'] = '1'
+    csvRow['object_type_name_wrong'] = 'Order'
+    csvRow['timestamp'] = '1'
+    csvRow['object_changes'] = "{\"customer_name\":\"Jack\"}"
 
     answer = 'Row object_type does not correspond to a non-empty string'
 
@@ -130,10 +130,10 @@ class LogsHelperTest < ActionView::TestCase
 
   test "CSV row empty object_type" do
     csvRow = {}
-    csvRow[:object_id] = '1'
-    csvRow[:object_type] = ''
-    csvRow[:timestamp] = '1'
-    csvRow[:object_changes] = "{\"customer_name\":\"Jack\"}"
+    csvRow['object_id'] = '1'
+    csvRow['object_type'] = ''
+    csvRow['timestamp'] = '1'
+    csvRow['object_changes'] = "{\"customer_name\":\"Jack\"}"
 
     answer = 'Row object_type does not correspond to a non-empty string'
 
@@ -142,10 +142,10 @@ class LogsHelperTest < ActionView::TestCase
 
   test "CSV row missing timestamp" do
     csvRow = {}
-    csvRow[:object_id] = '1'
-    csvRow[:object_type] = 'Object'
-    csvRow[:timestamp_name_wrong] = '1'
-    csvRow[:object_changes] = "{\"customer_name\":\"Jack\"}"
+    csvRow['object_id'] = '1'
+    csvRow['object_type'] = 'Object'
+    csvRow['timestamp_name_wrong'] = '1'
+    csvRow['object_changes'] = "{\"customer_name\":\"Jack\"}"
 
     answer = 'Row timestamp does not correspond to a valid integer'
 
@@ -154,10 +154,10 @@ class LogsHelperTest < ActionView::TestCase
 
   test "CSV row missing object_changes" do
     csvRow = {}
-    csvRow[:object_id] = '1'
-    csvRow[:object_type] = 'Object'
-    csvRow[:timestamp] = '1'
-    csvRow[:object_changes_name_wrong] = "{\"customer_name\":\"Jack\"}"
+    csvRow['object_id'] = '1'
+    csvRow['object_type'] = 'Object'
+    csvRow['timestamp'] = '1'
+    csvRow['object_changes_name_wrong'] = "{\"customer_name\":\"Jack\"}"
 
     answer = 'Row object_changes is not a valid json structure'
 
@@ -166,10 +166,10 @@ class LogsHelperTest < ActionView::TestCase
 
   test "CSV row invalid object_changes json" do
     csvRow = {}
-    csvRow[:object_id] = '1'
-    csvRow[:object_type] = 'Object'
-    csvRow[:timestamp] = '1'
-    csvRow[:object_changes] = "{\"customer_name\":\"Jack\""
+    csvRow['object_id'] = '1'
+    csvRow['object_type'] = 'Object'
+    csvRow['timestamp'] = '1'
+    csvRow['object_changes'] = "{\"customer_name\":\"Jack\""
 
     answer = 'Row object_changes is not a valid json structure'
 
@@ -178,23 +178,36 @@ class LogsHelperTest < ActionView::TestCase
 
   test "CSV row correct" do
     csvRow = {}
-    csvRow[:object_id] = '1'
-    csvRow[:object_type] = 'Object'
-    csvRow[:timestamp] = '1'
-    csvRow[:object_changes] = "{\"customer_name\":\"Jack\"}"
+    csvRow['object_id'] = '1'
+    csvRow['object_type'] = 'Object'
+    csvRow['timestamp'] = '1'
+    csvRow['object_changes'] = "{\"customer_name\":\"Jack\"}"
 
     assert_not findCsvRowError(csvRow)
   end
 
   test "Empty CSV file" do
-    assert false
+    csvFile = file_fixture('logs_empty.csv')
+    assert_equal 'File is empty', findCsvFileError(csvFile)
+  end
+
+  test "CSV file with only headers" do
+    csvFile = file_fixture('logs_only_headers.csv')
+    assert_not findCsvFileError(csvFile)
+  end
+
+  test "CSV file not csv" do
+    csvFile = file_fixture('logs_not_csv.csv')
+    assert_equal 'Row 2: Row does not have 4 entries', findCsvFileError(csvFile)
   end
 
   test "CSV file with one correct row" do
-    assert false
+    csvFile = file_fixture('logs_one_correct_row.csv')
+    assert_not findCsvFileError(csvFile)
   end
 
-  test "CSV file with ten correct row" do
-    assert false
+  test "CSV file with seven correct row" do
+    csvFile = file_fixture('logs_seven_correct_rows.csv')
+    assert_not findCsvFileError(csvFile)
   end
 end
