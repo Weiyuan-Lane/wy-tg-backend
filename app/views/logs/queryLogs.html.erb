@@ -1,13 +1,9 @@
-<% if defined?(@error) %>
-  <div>
+<% if defined?(@error) && !@error.nil? %>
+  <div class="alert bg-danger" role="alert">
+		<svg class="glyph stroked cancel"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-cancel"></use></svg>
     <%= @error %>
-  </div>
-<% end %>
-
-<% if defined?(@logs) && @logs.any? %>
-  <div>
-    <%= pluralize(@logs.size, "log") %> saved
-  </div>
+    <a href="#" class="pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+	</div>
 <% end %>
 
 <div class="panel panel-default">
@@ -15,15 +11,29 @@
     <%= render "tabs", tab: 'query' %>
     <div class="tab-content">
       <%= form_tag(query_logs_path, method: :post) do %>
-        <%= text_field_tag  :object_id %>
-        <%= text_field_tag  :object_type %>
-        <%= text_field_tag  :timestamp %>
-        <%= submit_tag( "Search" ) %>
+        <div class="form-group">
+          <label>Object Id</label>
+          <%= text_field_tag  :object_id, "", class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <label>Object Type</label>
+          <%= text_field_tag  :object_type, "", class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <label>Timestamp</label>
+          <%= text_field_tag  :timestamp, "", class: "form-control" %>
+        </div>
+        <hr>
+        <div class="form-group">
+          <%= submit_tag "Search", class: "btn btn-primary" %>
+        </div>
       <% end %>
 
       <% if defined?(@consolidatedJson) %>
-        <div>
-          <%= @consolidatedJson %>
+        <hr>
+        <div class="form-group">
+          <label>Query Result</label>
+          <textarea class="form-control" rows="3" disabled><%= @consolidatedJson %></textarea>
         </div>
       <% end %>
     </div>

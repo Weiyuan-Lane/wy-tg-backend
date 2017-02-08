@@ -1,7 +1,17 @@
-<% if defined?(@error) %>
-  <div>
+<% if defined?(@error) && !@error.nil? %>
+  <div class="alert bg-danger" role="alert">
+		<svg class="glyph stroked cancel"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-cancel"></use></svg>
     <%= @error %>
-  </div>
+    <a href="#" class="pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+	</div>
+<% end %>
+
+<% if defined?(@logs) && @logs.any? %>
+<div class="alert bg-success" role="alert">
+	<svg class="glyph stroked checkmark"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-checkmark"></use></svg>
+  <%= pluralize(@logs.size, "log") %> saved
+  <a href="#" class="pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+</div>
 <% end %>
 
 <div class="panel panel-default">
@@ -9,8 +19,14 @@
     <%= render "tabs", tab: 'upload' %>
     <div class="tab-content">
       <%= form_tag(upload_csv_path, method: :post, multipart: true) do %>
-        <%= file_field_tag :file, accept: 'text/csv' %>
-        <%= submit_tag( "Import" ) %>
+        <div class="form-group">
+          <label>File input</label>
+          <%= file_field_tag :file, accept: 'text/csv' %>
+        </div>
+        <hr>
+        <div class="form-group">
+          <%= submit_tag "Import", class: "btn btn-primary" %>
+        </div>
       <% end %>
     </div>
   </div>
