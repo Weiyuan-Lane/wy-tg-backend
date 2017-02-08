@@ -88,4 +88,10 @@ module LogsHelper
 
     Log.create(arr)
   end
+
+  def findLogs (objectId, objectType, timestamp)
+    Log.where(object_id: objectId, object_type: objectType)
+       .where("log_timestamp <= ?", Time.at(timestamp.to_i))
+       .order("log_timestamp")
+  end
 end

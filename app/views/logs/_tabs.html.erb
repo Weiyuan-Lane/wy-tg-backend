@@ -1,0 +1,8 @@
+<ul class="nav nav-tabs">
+  <li class="<%= tab == 'upload' ? 'active' : '' %>">
+    <%= link_to 'Upload', upload_csv_path %>
+  </li>
+  <li class="<%= tab == 'query' ? 'active' : '' %>">
+    <%= link_to 'Query', query_logs_path %>
+  </li>
+</ul>

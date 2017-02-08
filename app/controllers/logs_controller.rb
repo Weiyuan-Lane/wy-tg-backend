@@ -8,6 +8,10 @@ class LogsController < ApplicationController
   end
 
   def index
+    render 'setCsv'
+  end
+
+  def setCsv
   end
 
   def uploadCsv
@@ -23,19 +27,18 @@ class LogsController < ApplicationController
     if @error.nil?
       @logs = saveCSVFileContentsToDB(uploadedCsv)
     end
-
-    render 'index'
+    render 'setCsv'
   end
 
-  def queryOrderLogs
+  def queryLogs
+  end
+
+  def retrieveLogs
     queryParams = validateQueryParams
     if queryParams[:error].nil?
-      logs = Log.where(object_id: queryParams[:params][:object_id],
-                       object_type: 'Order')
-                .where("log_timestamp <= ?",
-                       Time.at(queryParams[:params][:object_changes].to_i))
-                .order("log_timestamp")
-      puts(logs)
+      logs = findLogs(queryParams[:params][:object_id],
+                      queryParams[:params][:object_type],
+                      queryParams[:params][:timestamp])
       jsonObjects = []
       logs.each do |log|
         jsonObjects << log[:object_changes]
@@ -44,17 +47,18 @@ class LogsController < ApplicationController
     else
       @error = queryParams[:error]
     end
-
-    render 'index'
+    render 'queryLogs'
   end
 
   private
     def validateQueryParams
-      targetParams = params.permit(:object_id, :object_changes)
+      targetParams = params.permit(:object_id, :timestamp, :object_type)
       result = {}
-      if (targetParams[:object_id] && !isPositiveInteger?(targetParams[:object_id]))
+      if (!targetParams.key?(:object_id) ||  !isPositiveInteger?(targetParams[:object_id]))
         result[:error] = 'Furnished id is not valid'
-      elsif (targetParams[:object_changes] && !isPositiveInteger?(targetParams[:object_changes]))
+      elsif (!targetParams.key?(:object_type) || targetParams[:object_type] == '')
+        result[:error] = 'Furnished type is not valid'
+      elsif (!targetParams.key?(:timestamp) || !isPositiveInteger?(targetParams[:timestamp]))
         result[:error] = 'Furnished timestamp is not valid'
       else
         result[:params] = targetParams

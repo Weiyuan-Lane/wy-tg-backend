@@ -1,0 +1,17 @@
+<% if defined?(@error) %>
+  <div>
+    <%= @error %>
+  </div>
+<% end %>
+
+<div class="panel panel-default">
+  <div class="panel-body tabs">
+    <%= render "tabs", tab: 'upload' %>
+    <div class="tab-content">
+      <%= form_tag(upload_csv_path, method: :post, multipart: true) do %>
+        <%= file_field_tag :file, accept: 'text/csv' %>
+        <%= submit_tag( "Import" ) %>
+      <% end %>
+    </div>
+  </div>
+</div>

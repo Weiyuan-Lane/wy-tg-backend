@@ -1,0 +1,31 @@
+<% if defined?(@error) %>
+  <div>
+    <%= @error %>
+  </div>
+<% end %>
+
+<% if defined?(@logs) && @logs.any? %>
+  <div>
+    <%= pluralize(@logs.size, "log") %> saved
+  </div>
+<% end %>
+
+<div class="panel panel-default">
+  <div class="panel-body tabs">
+    <%= render "tabs", tab: 'query' %>
+    <div class="tab-content">
+      <%= form_tag(query_logs_path, method: :post) do %>
+        <%= text_field_tag  :object_id %>
+        <%= text_field_tag  :object_type %>
+        <%= text_field_tag  :timestamp %>
+        <%= submit_tag( "Search" ) %>
+      <% end %>
+
+      <% if defined?(@consolidatedJson) %>
+        <div>
+          <%= @consolidatedJson %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
