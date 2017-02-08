@@ -72,7 +72,20 @@ module LogsHelper
         end
       end
     end
-
     return error
+  end
+
+  def saveCSVFileContentsToDB (file)
+    text = File.read(file).gsub(/\\"/,'""')
+    arr = []
+    CSV.parse(text, headers: true) do |row|
+      rowHash = row.to_hash
+      rowHash['log_timestamp'] = Time.at(rowHash['timestamp'].to_i)
+      rowHash.delete('timestamp')
+      puts(rowHash)
+      arr << rowHash
+    end
+
+    Log.create(arr)
   end
 end

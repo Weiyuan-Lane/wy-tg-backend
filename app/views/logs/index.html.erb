@@ -1,3 +1,15 @@
+<% if defined?(@error) %>
+  <div>
+    <%= @error %>
+  </div>
+<% end %>
+
+<% if defined?(@logs) && @logs.any? %>
+  <div>
+    <%= pluralize(@logs.size, "log") %> saved
+  </div>
+<% end %>
+
 <h1>Upload Logs</h1>
 <%= form_tag(upload_csv_path, method: :post, multipart: true) do %>
   <%= file_field_tag :file, accept: 'text/csv' %>
@@ -5,3 +17,14 @@
 <% end %>
 <hr>
 <h2>Check Logs</h2>
+<%= form_tag(query_logs_path, method: :post) do %>
+  <%= text_field_tag  :object_id %>
+  <%= text_field_tag  :object_changes %>
+  <%= submit_tag( "Search" ) %>
+<% end %>
+
+<% if defined?(@consolidatedJson) %>
+  <div>
+    <%= @consolidatedJson %>
+  </div>
+<% end %>

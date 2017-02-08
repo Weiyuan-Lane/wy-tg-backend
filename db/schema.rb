@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170206133522) do
+ActiveRecord::Schema.define(version: 20170208010331) do
 
   create_table "logs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "object_id",      null: false
     t.string   "object_type",    null: false
-    t.datetime "timestamp",      null: false
+    t.datetime "log_timestamp",  null: false
     t.json     "object_changes", null: false
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
