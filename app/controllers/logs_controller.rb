@@ -14,6 +14,8 @@ class LogsController < ApplicationController
   def setCsv
   end
 
+  # Route corresponds to uploading of csv file for instantiating one or more
+  # logs
   def uploadCsv
     #  Validate file parameter
     if params[:file].blank? || !params[:file].respond_to?(:read)
@@ -33,6 +35,8 @@ class LogsController < ApplicationController
   def queryLogs
   end
 
+  # Route correponds to retrieval of logs and compressing the json data
+  # single structure for representation purposes
   def retrieveLogs
     queryParams = validateQueryParams
     if queryParams[:error].nil?
@@ -51,6 +55,7 @@ class LogsController < ApplicationController
   end
 
   private
+    # Perform validation on query parameters, prepared for the log model
     def validateQueryParams
       targetParams = params.permit(:object_id, :timestamp, :object_type)
       result = {}
