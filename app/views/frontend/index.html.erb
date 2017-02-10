@@ -1,0 +1,72 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h4>Github Search</h4>
+	</div>
+	<div class="panel-body">
+		<table id="github_results_table">
+				<thead>
+					<tr>
+            <th data-field="id">Id</th>
+            <th data-field="name">Repository</th>
+            <th data-field="owner.login">Owner</th>
+          </tr>
+				</thead>
+		</table>
+	</div>
+</div>
+
+<div class="modal fade" id="github_info_modal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					<svg class="glyph stroked cancel">
+						<use xlink:href="#stroked-cancel"/>
+					</svg>
+				</button>
+        <h4 class="modal-title" id="myModalLabel">Repository Information</h4>
+      </div>
+      <div class="modal-body">
+				<table class="moderate-spacing fixed width">
+					<tr>
+						<td class="align-right align-top table-caption-width"><h4 class="no-margin">Url</h4></td>
+						<td>
+							<a id="github_info_modal_url" href="" target="_blank"></a>
+						</td>
+					</tr>
+					<tr>
+						<td class="align-right align-top table-caption-width"><h4 class="no-margin">Language</h4></td>
+						<td>
+							<span id="github_info_modal_language"></span>
+						</td>
+					</tr>
+					<tr>
+						<td class="align-right align-top table-caption-width"><h4 class="no-margin">Description</h4></td>
+						<td>
+							<span id="github_info_modal_description"></span>
+						</td>
+					</tr>
+					<tr>
+						<td class="align-right align-top table-caption-width"><h4 class="no-margin">Followers</h4></td>
+						<td>
+							<div id="github_info_modal_followers"></div>
+						</td>
+					</tr>
+				</table>
+      </div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="loading_modal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Loading... please wait</h4>
+      </div>
+      <div class="modal-body">
+        <div class="progress progress-striped active" style="margin-bottom:0;"><div class="progress-bar" style="width: 100%"></div></div>
+      </div>
+		</div>
+	</div>
+</div>

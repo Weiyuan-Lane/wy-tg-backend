@@ -5,5 +5,7 @@ Rails.application.routes.draw do
   post 'query-logs', to: 'logs#retrieveLogs'
   get 'query-logs', to: 'logs#queryLogs'
 
+  get 'frontend', to: 'frontend#index'
+
   root 'logs#index'
 end

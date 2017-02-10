@@ -10,6 +10,13 @@
   <div class="panel-body tabs">
     <%= render "tabs", tab: 'query' %>
     <div class="tab-content">
+      <% if defined?(@consolidatedJson) %>
+        <div class="form-group">
+          <label>Query Result</label>
+          <textarea class="form-control" rows="3" disabled><%= @consolidatedJson %></textarea>
+        </div>
+        <hr>
+      <% end %>
       <%= form_tag(query_logs_path, method: :post) do %>
         <div class="form-group">
           <label>Object Id</label>
@@ -26,14 +33,6 @@
         <hr>
         <div class="form-group">
           <%= submit_tag "Search", class: "btn btn-primary" %>
-        </div>
-      <% end %>
-
-      <% if defined?(@consolidatedJson) %>
-        <hr>
-        <div class="form-group">
-          <label>Query Result</label>
-          <textarea class="form-control" rows="3" disabled><%= @consolidatedJson %></textarea>
         </div>
       <% end %>
     </div>
