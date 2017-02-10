@@ -11,9 +11,7 @@
  *
  * Author: Weiyuan Liu
  */
-console.log('1');
 $(document).ready(function(){
-   console.log('2');
   var githubResultsTable = $('#github_results_table'),
       loadingModal = $('#loading_modal'),
       githubInfoModal = $('#github_info_modal');
@@ -190,8 +188,6 @@ $(document).ready(function(){
 
   //Base initialiser function
   function init(){
-    console.log(3);
-    console.log(bootstrapTableSettings);
     githubResultsTable.bootstrapTable(bootstrapTableSettings);
   }
   init();
